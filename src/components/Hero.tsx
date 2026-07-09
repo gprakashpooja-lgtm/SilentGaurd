@@ -99,14 +99,15 @@ function HolographicPhone({ onEmergency, triggered, containerRef }: {
     my.set(e.clientY - r.top - r.height / 2);
   };
 
-  // Orbital particles around phone
-  const orbitalParticles = Array.from({ length: 16 }, (_, i) => ({
-    angle: (i / 16) * 360,
-    radius: 145 + Math.sin(i * 1.7) * 25,
-    size: 2 + Math.random() * 2.5,
-    speed: 10 + Math.random() * 8,
+  // Orbital particles around phone — multiple orbit layers
+  const orbitalParticles = Array.from({ length: 28 }, (_, i) => ({
+    angle: (i / 28) * 360,
+    radius: 130 + Math.sin(i * 1.7) * 35 + (i % 3) * 20,
+    size: 1.5 + Math.random() * 2.5,
+    speed: 8 + Math.random() * 12,
     delay: Math.random() * 5,
-    color: i % 4 === 0 ? '#3b82f6' : i % 4 === 1 ? '#06b6d4' : i % 4 === 2 ? '#10b981' : '#60a5fa',
+    color: i % 4 === 0 ? '#3b82f6' : i % 4 === 1 ? '#06b6d4' : i % 4 === 2 ? '#60a5fa' : '#22d3ee',
+    yScale: 0.3 + (i % 4) * 0.08,
   }));
 
   return (
@@ -115,55 +116,125 @@ function HolographicPhone({ onEmergency, triggered, containerRef }: {
       className="relative flex flex-col items-center"
       style={{ perspective: '1600px' }}
     >
-      {/* Volumetric light cone behind phone */}
+      {/* Volumetric light cone beneath phone */}
       <div
         className="absolute pointer-events-none z-0"
         style={{
-          bottom: 60,
+          bottom: 40,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: 180,
-          height: 400,
-          background: 'linear-gradient(0deg, rgba(59,130,246,0.12) 0%, rgba(6,182,212,0.08) 40%, transparent 100%)',
-          clipPath: 'polygon(30% 100%, 70% 100%, 90% 0%, 10% 0%)',
-          filter: 'blur(8px)',
+          width: 220,
+          height: 420,
+          background: 'linear-gradient(0deg, rgba(59,130,246,0.18) 0%, rgba(6,182,212,0.1) 35%, transparent 100%)',
+          clipPath: 'polygon(28% 100%, 72% 100%, 92% 0%, 8% 0%)',
+          filter: 'blur(10px)',
         }}
+      />
+
+      {/* Volumetric blue glow pool beneath phone */}
+      <motion.div
+        className="absolute pointer-events-none z-0"
+        style={{
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 340,
+          height: 120,
+          background: 'radial-gradient(ellipse at center, rgba(59,130,246,0.35) 0%, rgba(6,182,212,0.15) 40%, transparent 70%)',
+          filter: 'blur(20px)',
+        }}
+        animate={{ opacity: [0.5, 0.85, 0.5], scaleX: [1, 1.08, 1] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* Soft bloom aura */}
       <motion.div
         className="absolute pointer-events-none z-0"
         style={{
-          width: 320,
-          height: 320,
+          width: 380,
+          height: 380,
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, rgba(6,182,212,0.1) 40%, transparent 70%)',
-          filter: 'blur(40px)',
+          background: 'radial-gradient(circle, rgba(59,130,246,0.22) 0%, rgba(6,182,212,0.12) 35%, transparent 70%)',
+          filter: 'blur(45px)',
         }}
-        animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.9, 0.6] }}
+        animate={{ scale: [1, 1.12, 1], opacity: [0.5, 0.85, 0.5] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Holographic expanding rings behind phone */}
-      {[180, 230, 280, 340].map((r, i) => (
+      {/* Expanding concentric signal rings */}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
         <motion.div
-          key={i}
+          key={`ring-${i}`}
           className="absolute rounded-full pointer-events-none z-0"
           style={{
-            width: r,
-            height: r,
+            width: 200,
+            height: 200,
             left: '50%',
             top: '50%',
             transform: 'translate(-50%, -50%)',
-            border: `1px solid rgba(59,130,246,${0.35 - i * 0.07})`,
-            boxShadow: `0 0 ${15 - i * 2}px rgba(59,130,246,${0.2 - i * 0.04})`,
+            border: `1.5px solid rgba(59,130,246,${0.4 - i * 0.05})`,
+            boxShadow: `0 0 ${20 - i * 2}px rgba(59,130,246,${0.25 - i * 0.03}), inset 0 0 ${20 - i * 2}px rgba(6,182,212,${0.15 - i * 0.02})`,
           }}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.5, 0.2, 0.5] }}
-          transition={{ duration: 4 + i * 0.8, delay: i * 0.3, repeat: Infinity, ease: 'easeOut' }}
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: [0.5, 1.8 + i * 0.15], opacity: [0, 0.6, 0] }}
+          transition={{ duration: 3.5, delay: i * 0.6, repeat: Infinity, ease: 'easeOut' }}
         />
+      ))}
+
+      {/* Secondary cyan wave rings — offset timing */}
+      {[0, 1, 2, 3].map((i) => (
+        <motion.div
+          key={`cyan-ring-${i}`}
+          className="absolute rounded-full pointer-events-none z-0"
+          style={{
+            width: 160,
+            height: 160,
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            border: `1px solid rgba(6,182,212,${0.3 - i * 0.05})`,
+            boxShadow: `0 0 12px rgba(6,182,212,${0.2 - i * 0.03})`,
+          }}
+          initial={{ scale: 0.4, opacity: 0 }}
+          animate={{ scale: [0.4, 1.5 + i * 0.2], opacity: [0, 0.5, 0] }}
+          transition={{ duration: 4, delay: 1.8 + i * 0.7, repeat: Infinity, ease: 'easeOut' }}
+        />
+      ))}
+
+      {/* Holographic energy wave arcs — rotating SVG rings */}
+      {[0, 1].map((arcIdx) => (
+        <motion.div
+          key={`arc-${arcIdx}`}
+          className="absolute pointer-events-none z-0"
+          style={{
+            width: 360,
+            height: 360,
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+          animate={{ rotate: arcIdx === 0 ? 360 : -360 }}
+          transition={{ duration: 25 + arcIdx * 10, repeat: Infinity, ease: 'linear' }}
+        >
+          <svg viewBox="0 0 360 360" className="w-full h-full">
+            <circle
+              cx="180" cy="180" r={140 + arcIdx * 30}
+              fill="none"
+              stroke={`rgba(59,130,246,${0.25 - arcIdx * 0.08})`}
+              strokeWidth="1"
+              strokeDasharray={`${20 + arcIdx * 10} ${30 + arcIdx * 15}`}
+            />
+            <circle
+              cx="180" cy="180" r={100 + arcIdx * 20}
+              fill="none"
+              stroke={`rgba(6,182,212,${0.2 - arcIdx * 0.06})`}
+              strokeWidth="0.8"
+              strokeDasharray={`${8 + arcIdx * 4} ${40 + arcIdx * 10}`}
+            />
+          </svg>
+        </motion.div>
       ))}
 
       {/* Rotating holographic platform */}
@@ -193,7 +264,7 @@ function HolographicPhone({ onEmergency, triggered, containerRef }: {
         </svg>
       </motion.div>
 
-      {/* Orbital particles */}
+      {/* Orbital particles — soft glowing dots orbiting the phone */}
       <div className="absolute inset-0 pointer-events-none z-10" style={{ transform: 'translateZ(20px)' }}>
         {orbitalParticles.map((p, i) => (
           <motion.div
@@ -213,10 +284,10 @@ function HolographicPhone({ onEmergency, triggered, containerRef }: {
                 Math.cos(((p.angle + 360) * Math.PI) / 180) * p.radius - p.size / 2,
               ],
               y: [
-                Math.sin((p.angle * Math.PI) / 180) * p.radius * 0.35 - p.size / 2,
-                Math.sin(((p.angle + 360) * Math.PI) / 180) * p.radius * 0.35 - p.size / 2,
+                Math.sin((p.angle * Math.PI) / 180) * p.radius * p.yScale - p.size / 2,
+                Math.sin(((p.angle + 360) * Math.PI) / 180) * p.radius * p.yScale - p.size / 2,
               ],
-              opacity: [0.4, 1, 0.4],
+              opacity: [0.3, 0.9, 0.3],
             }}
             transition={{ duration: p.speed, repeat: Infinity, ease: 'linear', delay: p.delay }}
           />

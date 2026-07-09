@@ -5,14 +5,12 @@ import LoadingScreen from './components/LoadingScreen';
 import Hero from './components/Hero';
 import EmergencyDetection from './components/EmergencyDetection';
 import HowItWorks from './components/HowItWorks';
-import HumanVisualization from './components/HumanVisualization';
 import EmergencyTimeline from './components/EmergencyTimeline';
 import AIDashboard from './components/AIDashboard';
 import AIIncidentSummary from './components/AIIncidentSummary';
 import LiveMap from './components/LiveMap';
 import FamilyCenter from './components/FamilyCenter';
 import FutureVision from './components/FutureVision';
-import ElectronicWaves from './components/ElectronicWaves';
 import VerificationSection from './components/VerificationScreen';
 import ClosingCTA, { Footer } from './components/ClosingCTA';
 import { ParticleField, ScrollProgress, MouseGlow, AIScanningOverlay } from './components/BackgroundEffects';
@@ -74,14 +72,12 @@ export default function App() {
           <Hero onEmergency={handleEmergency} triggered={triggered} />
           <EmergencyDetection />
           <HowItWorks />
-          <HumanVisualization />
           <EmergencyTimeline />
           <AIDashboard />
           <AIIncidentSummary />
           <LiveMap />
           <FamilyCenter />
           <FutureVision />
-          <ElectronicWaves />
           <VerificationSection />
         </main>
 
