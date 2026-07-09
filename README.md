@@ -78,9 +78,6 @@ Emergency Response
 - Tailwind CSS
 - Vite
 
-### Backend
-- Supabase
-
 ### UI & Animations
 - Framer Motion
 - Lucide React
@@ -100,13 +97,15 @@ Emergency Response
 
 **Website**
 
-https://your-vercel-link.vercel.app
+https://silent-gaurd.vercel.app/
+
 
 ---
 
 ## 💻 GitHub Repository
 
-https://github.com/your-username/silentguard
+https://github.com/gprakashpooja-lgtm/SilentGaurd
+
 
 ---
 
