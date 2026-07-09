@@ -5,6 +5,7 @@ import {
   ChevronDown, Zap, Cpu, Clock, Radio
 } from 'lucide-react';
 import { useAnimatedCounter } from '../hooks/useAnimatedCounter';
+import { useMouseParallax } from '../hooks/useMouseParallax';
 
 // ---- Word reveal ----
 function WordReveal({ text, className, delay = 0 }: { text: string; className?: string; delay?: number }) {
