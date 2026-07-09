@@ -104,7 +104,7 @@ https://silent-gaurd.vercel.app/
 
 ## 💻 GitHub Repository
 
-https://github.com/gprakashpooja-lgtm/SilentGaurd
+https://github.com/gprakashpooja-lgtm/SilentGuard
 
 
 ---
